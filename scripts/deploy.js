@@ -19,7 +19,7 @@ try {
   console.error('Erro ao remover a pasta dist');
 }
 
-const deployCommand = `npm run build && mv dist/index.html dist/index-cheff.html && scp -i ${sshKeyPath} -r dist/* ${username}@${ip}:/var/www/html && ssh -i ${sshKeyPath} ${username}@${ip} "sudo service nginx restart"`
+const deployCommand = `npm run build && mv dist/index.html dist/index-cheff.html && ssh -i ${sshKeyPath} ${username}@${ip} "sudo rm -r /var/www/html/assets-cheff" && scp -i ${sshKeyPath} -r dist/* ${username}@${ip}:/var/www/html && ssh -i ${sshKeyPath} ${username}@${ip} "sudo service nginx restart"`
 
 try {
   execSync(deployCommand, {stdio: 'inherit'});
