@@ -23,4 +23,7 @@ export default defineConfig({
     outDir: "dist",
     assetsDir: "assets-cheff",
   },
+  server: {
+    port: 3001,
+  },
 });
