@@ -1,8 +1,8 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, Fragment, PropsWithChildren } from "react";
 
 const ComposerFragment: FC<PropsWithChildren> = ({
   children,
-}: PropsWithChildren): JSX.Element => <> {children} </>;
+}: PropsWithChildren): JSX.Element => <Fragment> {children} </Fragment>;
 
 const providerReducer =
   (
