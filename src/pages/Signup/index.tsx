@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { BoxVariants as Box } from "../../ui/components";
+import { BoxVariants as Box, Spacer } from "../../ui/components";
 
 import { SignupForm } from "./components/SignupForm";
 
@@ -19,6 +19,7 @@ function SignupPage() {
   return (
     <Fragment>
       <Box.Info text={text} />
+      <Spacer />
       <SignupForm
         register={register}
         watch={watch}

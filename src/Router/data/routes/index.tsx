@@ -6,10 +6,18 @@ import {
   NonAuthTemplate,
 } from "../../../templates";
 
-import { HomePage, LoginPage, SignupPage } from "../../../pages";
+import {
+  HomePage,
+  LoginPage,
+  NewRecipePage,
+  RecipesPage,
+  SignupPage,
+} from "../../../pages";
 
 const routes = {
   home: "/",
+  recipes: "/receitas",
+  newRecipe: "/receitas/cadastro",
   login: "/login",
   signup: "/cadastro",
 };
@@ -41,9 +49,16 @@ const routesObject: RouteObject[] = [
         },
         children: [
           {
-            id: "data",
             path: routes.home,
             element: <HomePage />,
+          },
+          {
+            path: routes.recipes,
+            element: <RecipesPage />,
+          },
+          {
+            path: routes.newRecipe,
+            element: <NewRecipePage />,
           },
         ],
       },
