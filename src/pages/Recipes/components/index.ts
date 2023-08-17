@@ -1,1 +1,1 @@
-export { RecipesTitle } from "./RecipesTitle";
+export { RecipesTable } from "./RecipesTable";

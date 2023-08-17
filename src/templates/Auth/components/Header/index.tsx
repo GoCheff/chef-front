@@ -7,17 +7,22 @@ import { S } from "./styles";
 function Header(): JSX.Element {
   return (
     <S.C.Header>
-      <Icon name="logo" fill="primary" width="205px" height="146px" />
+      <Icon name="logo" size="150px" fill="primary" />
       <S.C.Nav>
         <S.C.Ul>
           <li>
-            <S.C.Link to={routes.login} end>
-              Entrar
+            <S.C.Link to={routes.home} end>
+              Pedidos
             </S.C.Link>
           </li>
           <li>
-            <S.C.Link to={routes.signup} end>
-              Cadastrar
+            <S.C.Link to={routes.recipes} end>
+              Receitas
+            </S.C.Link>
+          </li>
+          <li>
+            <S.C.Link to={routes.newRecipe} end>
+              Nova receita
             </S.C.Link>
           </li>
         </S.C.Ul>

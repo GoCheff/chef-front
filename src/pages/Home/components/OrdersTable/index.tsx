@@ -2,8 +2,9 @@ import { Button, Table } from "../../../../ui/layouts";
 
 import { headers } from "../../data";
 
-import { S } from "./styles";
 import { StatusTag } from "../StatusTag";
+
+import { S } from "./styles";
 
 interface OrdersTableProps {
   orders: {

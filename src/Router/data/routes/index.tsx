@@ -42,11 +42,6 @@ const routesObject: RouteObject[] = [
       },
       {
         element: <AuthTemplate />,
-        loader: () => {
-          return {
-            needAuth: true,
-          };
-        },
         children: [
           {
             path: routes.home,

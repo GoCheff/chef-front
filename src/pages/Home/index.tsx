@@ -1,8 +1,4 @@
-import { HomeTitle, OrdersTable } from "./components";
-
-import { Icon } from "../../ui/components";
-
-import { S } from "./styles";
+import { OrdersTable } from "./components";
 
 function HomePage(): JSX.Element {
   const orders = [
@@ -32,13 +28,7 @@ function HomePage(): JSX.Element {
     },
   ];
 
-  return (
-    <S.Container>
-      <Icon name="logo" size="150px" fill="primary" />
-      <HomeTitle />
-      <OrdersTable orders={orders} />
-    </S.Container>
-  );
+  return <OrdersTable orders={orders} />;
 }
 
 export { HomePage };
