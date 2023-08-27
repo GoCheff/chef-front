@@ -13,13 +13,15 @@ import { Header } from "./components";
 import { S } from "./styles";
 
 function AuthTemplate(): JSX.Element {
-  const { user } = useContext(UserContext);
+  const { user, loadingUser } = useContext(UserContext);
 
   if (!user) {
     Navigate({
       to: routes.login,
     });
+  }
 
+  if (loadingUser || !user) {
     return <Loading.Screen />;
   }
 

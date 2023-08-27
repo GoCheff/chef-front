@@ -1,7 +1,9 @@
+import { CartType } from "../../../../entities";
+
 import { S } from "./styles";
 
 interface StatusTagProps {
-  status: string;
+  status: CartType["status"];
 }
 
 function StatusTag({ status }: StatusTagProps) {
@@ -12,13 +14,9 @@ function StatusTag({ status }: StatusTagProps) {
     rejected: "Recusado",
     paid: "Pago",
     delivered: "Finalizado",
-  };
+  } as Record<CartType["status"], string>;
 
-  return (
-    <S.C.StatusTag $status={status}>
-      {statusType[status as keyof typeof statusType]}
-    </S.C.StatusTag>
-  );
+  return <S.C.StatusTag $status={status}>{statusType[status]}</S.C.StatusTag>;
 }
 
 export { StatusTag };

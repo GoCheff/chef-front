@@ -4,20 +4,18 @@ import { Table } from "../../../../ui/layouts";
 
 import { formatPriceToReal } from "../../../../utils";
 
+import { FoodPlateType } from "../../../../entities";
+
 import { S } from "./styles";
 
 interface RecipesTableProps {
-  recipes: {
-    id: number;
-    name: string;
-    price: number;
-    minServe: number;
-    maxServe: number;
-  }[];
+  recipes: FoodPlateType[] | null;
+  loading?: boolean;
+  setNeedRetry: (value: boolean) => void;
 }
 
-function RecipesTable({ recipes }: RecipesTableProps) {
-  const data = recipes.map((recipe) => {
+function RecipesTable({ recipes, loading }: RecipesTableProps) {
+  const data = (recipes || []).map((recipe) => {
     const _serve =
       recipe.minServe !== recipe.maxServe
         ? `${recipe.minServe} - ${recipe.maxServe}`
@@ -33,7 +31,7 @@ function RecipesTable({ recipes }: RecipesTableProps) {
 
   return (
     <S.C.Section>
-      <Table headers={headers} data={data} />
+      <Table headers={headers} data={data} loading={loading} />
     </S.C.Section>
   );
 }

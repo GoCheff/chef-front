@@ -1,34 +1,37 @@
+import { useContext, useState } from "react";
+
+import { UserContext } from "../../context";
+
+import { services } from "../../services";
+
 import { OrdersTable } from "./components";
 
-function HomePage(): JSX.Element {
-  const orders = [
-    {
-      id: 1,
-      status: "open",
-    },
-    {
-      id: 2,
-      status: "sent",
-    },
-    {
-      id: 3,
-      status: "approved",
-    },
-    {
-      id: 4,
-      status: "rejected",
-    },
-    {
-      id: 5,
-      status: "paid",
-    },
-    {
-      id: 6,
-      status: "delivered",
-    },
-  ];
+import { useAsync } from "../../hooks";
 
-  return <OrdersTable orders={orders} />;
+function HomePage(): JSX.Element {
+  const { token } = useContext(UserContext);
+  const [needRetry, setNeedRetry] = useState(true);
+
+  const { data: orders, loading } = useAsync({
+    fn: async () => {
+      if (!needRetry) return null;
+
+      setNeedRetry(false);
+
+      const { data } = await services.carts.getAll({ token });
+
+      return data;
+    },
+    deps: [needRetry],
+  });
+
+  return (
+    <OrdersTable
+      orders={orders}
+      loading={loading}
+      setNeedRetry={setNeedRetry}
+    />
+  );
 }
 
 export { HomePage };

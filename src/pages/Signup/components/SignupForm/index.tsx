@@ -5,12 +5,19 @@ import {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
+import { toast } from "../../../../libs";
+
+import { services } from "../../../../services";
+
+import { routes } from "../../../../Router/data";
 
 import { Button, Form, Input } from "../../../../ui/layouts";
 
 import { Spacer } from "../../../../ui/components";
 
-import { wait } from "../../../../utils";
+import { ResponseType } from "../../../../entities";
 
 interface SignupFormProps {
   register: UseFormRegister<FieldValues>;
@@ -27,10 +34,47 @@ function SignupForm({
   errors,
   isSubmitting,
 }: SignupFormProps): JSX.Element {
-  async function onSubmit(data: FieldValues) {
-    await wait({ time: 3000 });
+  const navigate = useNavigate();
 
-    console.log({ data });
+  async function onSubmit({
+    name,
+    email,
+    password,
+    gender,
+    mainCuisine,
+    city,
+    registerReason,
+  }: FieldValues) {
+    try {
+      const genderTypes = {
+        Masculino: "male",
+        Feminino: "female",
+        Outro: "other",
+        "Prefiro não dizer": "preferNotToSay",
+      };
+
+      const _gender = Object.entries(genderTypes).find(
+        ([key]) => key === gender
+      )?.[1];
+
+      const { message } = await services.cheff.requestRegistration({
+        name,
+        email,
+        password,
+        gender: _gender || gender,
+        mainCuisine,
+        city,
+        registerReason,
+      });
+
+      toast.success(message);
+
+      navigate(routes.login);
+    } catch (error) {
+      const { message: errorMessage } = error as ResponseType<{}>;
+
+      toast.error(errorMessage);
+    }
   }
 
   function getButtonDisabled() {
@@ -39,6 +83,10 @@ function SignupForm({
       !watch("email") ||
       !watch("password") ||
       !watch("passwordConfirmation") ||
+      !watch("gender") ||
+      !watch("mainCuisine") ||
+      !watch("city") ||
+      !watch("registerReason") ||
       Object.keys(errors).length ||
       isSubmitting
     );
@@ -68,11 +116,13 @@ function SignupForm({
       <Input
         register={register("password", {
           required: true,
+          minLength: 6,
         })}
         value={watch("password")}
         label="Senha"
         type="password"
         error={errors.password}
+        minLength={6}
         disabled={isSubmitting}
       />
       <Input
@@ -90,6 +140,43 @@ function SignupForm({
             ? "As senhas não coincidem"
             : undefined
         }
+      />
+      <Input
+        register={register("gender", {
+          required: true,
+          pattern: /^(Masculino|Feminino|Outro|Prefiro não dizer)$/i,
+        })}
+        value={watch("gender")}
+        label="Gênero"
+        error={errors.gender}
+        disabled={isSubmitting}
+      />
+      <Input
+        register={register("mainCuisine", {
+          required: true,
+        })}
+        value={watch("mainCuisine")}
+        label="Especialidade"
+        error={errors.mainCuisine}
+        disabled={isSubmitting}
+      />
+      <Input
+        register={register("city", {
+          required: true,
+        })}
+        value={watch("city")}
+        label="Cidade"
+        error={errors.city}
+        disabled={isSubmitting}
+      />
+      <Input
+        register={register("registerReason", {
+          required: true,
+        })}
+        value={watch("registerReason")}
+        label="Por que você quer fazer parte da nossa comunidade?"
+        error={errors.registerReason}
+        disabled={isSubmitting}
       />
       <Spacer size={3} />
       <Button
