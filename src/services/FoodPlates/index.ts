@@ -22,6 +22,27 @@ class FoodPlates {
       throw new ResponseModel<{}>(error as any);
     }
   }
+
+  public async create({
+    token,
+    data,
+  }: {
+    token: string;
+    data: Omit<
+      FoodPlateType,
+      "id" | "cheffId" | "createdAt" | "updatedAt" | "deletedAt"
+    >;
+  }) {
+    this.request.setAuthorization(token);
+
+    try {
+      const response = (await this.request.post("", data)) as any;
+
+      return new ResponseModel<FoodPlateType>(response);
+    } catch (error) {
+      throw new ResponseModel<{}>(error as any);
+    }
+  }
 }
 
 const foodPlates = new FoodPlates();

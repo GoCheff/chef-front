@@ -12,11 +12,11 @@ function useAsync<T>({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const promise = fn();
-
-    if (!promise) {
+    if (loading) {
       return;
     }
+
+    const promise = fn();
 
     setLoading(true);
 

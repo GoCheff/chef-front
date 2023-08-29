@@ -21,6 +21,9 @@ interface InputProps extends PropsWithChildren {
   customError?: string;
   disabled?: boolean;
   loading?: boolean;
+  textarea?: boolean;
+  select?: boolean;
+  options?: string[];
 }
 
 function Input({
@@ -34,6 +37,9 @@ function Input({
   error,
   customError,
   disabled = false,
+  textarea = false,
+  select = false,
+  options,
 }: InputProps): JSX.Element {
   const [focus, setFocus] = useState(false);
 
@@ -48,25 +54,51 @@ function Input({
     maxLength: maxLength
       ? `Máximo de ${maxLength} caracteres permitidos`
       : "Máximo de caracteres permitidos atingido",
+    min: "Valor mínimo não atingido",
+    max: "Valor máximo atingido",
   };
 
   const errorType = error?.type as keyof typeof errorTypes;
 
+  const inputOrTextAreaProps = {
+    ...register,
+    onFocus: () => !disabled && setFocus(true),
+    onBlur: () => !disabled && setFocus(false),
+    disabled,
+  };
+
+  if (select && textarea) {
+    throw new Error("Input cannot be both select and textarea");
+  }
+
+  if (select && (!options || !options.length)) {
+    throw new Error("Select input must have options");
+  }
+
   return (
     <div>
-      <S.C.Label $focus={focus} $filled={value} $error={hasError}>
+      <S.C.Label $focus={focus} $filled={value} $error={hasError} $type={type}>
         {label && (
           <S.LabelText onClick={() => !disabled && setFocus(true)}>
             {label}
           </S.LabelText>
         )}
-        <S.C.Input
-          type={type}
-          {...register}
-          onFocus={() => !disabled && setFocus(true)}
-          onBlur={() => !disabled && setFocus(false)}
-          disabled={disabled}
-        />
+        {textarea && <S.C.TextArea {...inputOrTextAreaProps} />}
+        {select && (
+          <S.C.Select {...inputOrTextAreaProps}>
+            <option value="" disabled hidden>
+              Selecione uma opção
+            </option>
+            {options?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </S.C.Select>
+        )}
+        {!textarea && !select && (
+          <S.C.Input type={type} {...inputOrTextAreaProps} />
+        )}
         {showErrors && (
           <S.Error>{customError || errorTypes[errorType] || ""}</S.Error>
         )}
