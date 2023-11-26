@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { UserContext } from "../../context";
 
@@ -9,8 +9,21 @@ import { useAsync } from "../../hooks";
 import { services } from "../../services";
 
 function RecipesPage(): JSX.Element {
-  const { token } = useContext(UserContext);
+  const { token, logout } = useContext(UserContext);
   const [needRetry, setNeedRetry] = useState(true);
+
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === "s" || e.key === "S") {
+        logout();
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("keydown", listener);
+
+    return () => window.removeEventListener("keydown", listener);
+  });
 
   const { data: recipes, loading } = useAsync({
     fn: async () => {
