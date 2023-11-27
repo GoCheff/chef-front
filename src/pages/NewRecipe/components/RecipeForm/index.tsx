@@ -238,7 +238,7 @@ function RecipeForm({
             disabled={getButtonDisabled()}
             loading={isSubmitting}
           >
-            Entrar
+            Salvar
           </Button>
         </Form>
       </S.Wrapper>

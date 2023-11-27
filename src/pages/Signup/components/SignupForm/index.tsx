@@ -174,7 +174,7 @@ function SignupForm({
           required: true,
         })}
         value={watch("registerReason")}
-        label="Por que você quer fazer parte da nossa comunidade?"
+        label="Linkedin"
         error={errors.registerReason}
         disabled={isSubmitting}
       />
